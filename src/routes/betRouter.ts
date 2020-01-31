@@ -36,7 +36,7 @@ async function gamble(amount: number) {
   return { win, dice };
 }
 
-router.post("/:id/:token/bet/:amount", async (ctx, next) => {
+router.get("/:id/:token/bet/:amount", async (ctx, next) => {
   const user = (await knex("user").where({ userid: ctx.params.id }))[0];
   if (user.token == ctx.params.token) {
     const amount = parseInt(ctx.params.amount);
