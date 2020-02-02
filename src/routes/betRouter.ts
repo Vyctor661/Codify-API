@@ -4,7 +4,7 @@ import knex from "../../knexfile";
 const router = new Router();
 
 async function checkBalance(amount: number, id: string) {
-  if (amount <= 0 || amount >= 100001) {
+  if (amount <= 0 || amount >= 1001) {
     return false;
   }
 
