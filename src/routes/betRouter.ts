@@ -4,7 +4,7 @@ import knex from "../../knexfile";
 const router = new Router();
 
 async function checkBalance(amount: number, id: string) {
-  if (amount <= 0 || amount >= 10000) {
+  if (amount <= 0 || amount >= 100001) {
     return false;
   }
 
@@ -47,7 +47,7 @@ router.get("/:id/:token/bet/:amount", async (ctx, next) => {
       ctx.body = {
         rolled: dice,
         won: dice >= 50 ? true : false,
-        amoundWon: dice === 100 ? amount * 3 : dice >= 50 ? amount * 2 : 0,
+        amountWon: dice === 100 ? amount * 3 : dice >= 50 ? amount * 2 : 0,
         newBalance
       };
     } else {
