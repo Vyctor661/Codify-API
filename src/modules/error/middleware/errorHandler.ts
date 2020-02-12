@@ -1,9 +1,28 @@
-export default async (ctx: any, next: any) => {
+import { Middleware } from "koa"
+
+import { HttpError } from "../classes/httpError"
+
+export const errorHandler = (): Middleware => async (ctx, next) => {
     try {
         await next()
-    } catch (e) {
-        ctx.status = e.status || 500
-        ctx.body = e.message
-        ctx.app.emit("error", e, ctx)
+    } catch (err) {
+        if (err instanceof HttpError) {
+            ctx.status = err.status
+            ctx.body = {
+                status: err.status,
+                message: err.reason
+            }
+
+            return
+        }
+
+        console.error(err)
+
+        ctx.status = 500
+        ctx.body = {
+            status: 500,
+            message: "Internal Server Error"
+        }
+        return
     }
 }
