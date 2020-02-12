@@ -11,7 +11,7 @@ import apiRouter from "./modules/apiRouter"
 const app = new Koa()
 const router = new Router()
 
-const port = Number(process.env.PORT ?? 8080)
+const port = Number(process.env.PORT ?? 8090)
 
 app.use(errorHandler())
 
