@@ -1,84 +1,43 @@
 import Router from "koa-router"
-import knex from "../../knexfile"
 
-const router = new Router()
+import { HttpError } from "../error/classes/httpError"
 
-async function checkBalance(amount: number, id: string) {
-    if (amount <= 0 || amount >= 1001) {
-        return false
+import { getUserToken } from "./actions/getUserToken"
+import { updateUserBalance } from "./actions/updateUserBalance"
+
+import { gamble } from "./helpers/gamble"
+import { checkAmount } from "./helpers/checkAmount"
+
+const router = new Router({ prefix: "/bet" })
+
+router.post("/", async (ctx, next) => {
+    const { id, token, amount } = ctx.body
+
+    const userToken = await getUserToken(String(id))
+    if (!userToken) {
+        throw new HttpError(404, "There seems to be no user with that id!")
     }
 
-    const balance = (await knex("user").where({ userid: id }))[0].balance
-
-    return parseInt(balance) >= amount
-}
-
-async function updateBalance(amount: number, id: string) {
-    const { win, dice } = await gamble(amount)
-
-    const balance = (await knex("user").where({ userid: id }))[0].balance
-
-    await knex("user")
-        .where({ userid: id })
-        .update({
-            balance: win + parseInt(balance)
-        })
-
-    const newBalance = win + parseInt(balance)
-
-    return { dice, newBalance }
-}
-
-async function gamble(amount: number) {
-    const dice = Math.floor(Math.random() * 100) + 1
-    const win = dice === 100 ? amount * 2 : dice >= 50 ? amount : -amount
-
-    return { win, dice }
-}
-
-router.get("/:id/:token/bet/:amount", async (ctx, next) => {
-    const user = (await knex("user").where({ userid: ctx.params.id }))[0]
-    if (user.token == ctx.params.token) {
-        const amount = parseInt(ctx.params.amount)
-        const id = ctx.params.id
-
-        if (await checkBalance(amount, id)) {
-            const { dice, newBalance } = await updateBalance(amount, id)
-            ctx.body = {
-                rolled: dice,
-                won: dice >= 50 ? true : false,
-                amountWon:
-                    dice === 100 ? amount * 3 : dice >= 50 ? amount * 2 : 0,
-                newBalance
-            }
-        } else {
-            ctx.body = { error: 500, errorMessage: "You can't do that." }
-        }
-    } else {
-        ctx.body = "Unauthorized!"
+    if (userToken !== token) {
+        throw new HttpError(401, "That doesn't seem to be the right token!")
     }
-})
 
-router.get("/:id/:token/bet", async (ctx, next) => {
-    const user = (await knex("user").where({ userid: ctx.params.id }))[0]
-    if (user.token == ctx.params.token) {
-        ctx.body = "Add /${amount} to your link to use bet. Use POST"
-    } else {
-        ctx.body = "Unauthorized!"
+    const validAmount = await checkAmount(Number(amount))(id)
+    if (!validAmount) {
+        throw new HttpError(400, "You don't seem to have enough money!")
     }
-})
 
-router.get("/:id/:token", async (ctx, next) => {
-    const user = (await knex("user").where({ userid: ctx.params.id }))[0]
-    if (user.token == ctx.params.token) {
-        ctx.body = user
-    } else {
-        ctx.body = "Unauthorized!"
+    const [dice, winAmount] = gamble(Number(amount))
+    const newBalance = await updateUserBalance(id)(winAmount)
+
+    ctx.body = {
+        rolled: dice,
+        won: dice >= 50 ? true : false,
+        amountWon: winAmount + Number(amount),
+        newBalance
     }
+
+    await next()
 })
 
-router.get("/", (ctx, next) => {
-    ctx.body = "users"
-})
-
-export default router
+export default router.routes()
