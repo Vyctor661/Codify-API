@@ -2,9 +2,12 @@
   "name": "codify-api",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint --fix **/*.ts",
+    "format": "prettier --write \"**/*.+(js|json|ts)\"",
+    "check": "npm run format && npm run lint",
+    "start": "node ./dist/src/server.js",
     "build": "tsc",
     "dev": "nodemon",
-    "start": "node ./dist/src/server.js",
     "start-dev": "node -r ./register.js src/server.ts"
   },
   "repository": {
