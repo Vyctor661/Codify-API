@@ -8,7 +8,7 @@
         "start": "node ./dist/src/server.js",
         "build": "tsc",
         "dev": "nodemon",
-        "start-dev": "node -r ./register.js src/server.ts"
+        "start-dev": "node -r ./register.js src/index.ts"
     },
     "repository": {
         "type": "git",
