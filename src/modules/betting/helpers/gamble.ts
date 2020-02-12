@@ -6,5 +6,5 @@ export const gamble = (amount: number) => {
     const dice = randomInt(minReward)(maxReward)
     const winAmount = dice === 100 ? amount * 2 : dice >= 50 ? amount : -amount
 
-    return [dice, winAmount]
+    return [dice, winAmount] as const
 }
