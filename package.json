@@ -1,7 +1,5 @@
 {
   "name": "codify-api",
-  "version": "1.0.0",
-  "description": "An API for Codify",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
