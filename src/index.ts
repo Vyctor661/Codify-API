@@ -6,7 +6,7 @@ import logger from "koa-logger"
 
 import { errorHandler } from "./modules/error/middleware/errorHandler"
 
-import mainRouter from "./routes/betRouter"
+import apiRouter from "./modules/apiRouter"
 
 const app = new Koa()
 const router = new Router()
@@ -15,13 +15,11 @@ const port = Number(process.env.PORT ?? 8080)
 
 app.use(errorHandler())
 
-router.get("/", (ctx, next) => {
-    ctx.body = "Hello."
-})
+router.use(apiRouter)
 
-router.use("/user", mainRouter.routes())
-
-app.use(logger())
+if (process.env.NODE_ENV === "development") {
+    app.use(logger())
+}
 
 app.use(router.routes()).use(router.allowedMethods())
 
