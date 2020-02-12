@@ -5,7 +5,7 @@
     "build": "tsc",
     "dev": "nodemon",
     "start": "node ./dist/src/server.js",
-    "start:dev": "node -r ./register.js src/server.ts"
+    "start-dev": "node -r ./register.js src/server.ts"
   },
   "repository": {
     "type": "git",
