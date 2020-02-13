@@ -1,40 +1,50 @@
 {
-  "name": "codify-api",
-  "version": "1.0.0",
-  "description": "An API for Codify",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc",
-    "dev": "nodemon",
-    "start": "node ./dist/src/server.js",
-    "start:dev": "node -r ./register.js src/server.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Vyctor661/Codify-API.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Vyctor661/Codify-API/issues"
-  },
-  "homepage": "https://github.com/Vyctor661/Codify-API#readme",
-  "dependencies": {
-    "@types/knex": "^0.16.1",
-    "@types/koa": "^2.11.0",
-    "@types/koa-logger": "^3.1.1",
-    "@types/koa-router": "^7.0.42",
-    "@types/pg": "^7.14.1",
-    "knex": "^0.20.6",
-    "koa": "^2.11.0",
-    "koa-logger": "^3.2.1",
-    "koa-router": "^7.4.0",
-    "pg": "^7.17.0",
-    "typescript": "^3.7.4"
-  },
-  "devDependencies": {
-    "ts-node": "^8.5.4",
-    "dotenv": "^8.2.0",
-    "nodemon": "^2.0.2"
-  }
+    "name": "codify-api",
+    "main": "index.js",
+    "scripts": {
+        "lint": "eslint --fix **/*.ts",
+        "format": "prettier --write \"**/*.+(js|json|ts)\"",
+        "check": "npm run format && npm run lint",
+        "start": "node ./dist/src/server.js",
+        "build": "tsc",
+        "dev": "nodemon",
+        "start-dev": "node -r ./register.js src/index.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Vyctor661/Codify-API.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Vyctor661/Codify-API/issues"
+    },
+    "homepage": "https://github.com/Vyctor661/Codify-API#readme",
+    "dependencies": {
+        "dotenv": "^8.2.0",
+        "knex": "^0.20.6",
+        "koa": "^2.11.0",
+        "koa-logger": "^3.2.1",
+        "koa-router": "^7.4.0",
+        "pg": "^7.17.0"
+    },
+    "devDependencies": {
+        "@types/koa": "^2.11.1",
+        "@types/koa-logger": "^3.1.1",
+        "@types/koa-router": "^7.4.0",
+        "@typescript-eslint/eslint-plugin": "^2.19.2",
+        "@typescript-eslint/parser": "^2.19.2",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-config-standard": "^14.1.0",
+        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-node": "^11.0.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "nodemon": "^2.0.2",
+        "prettier": "^1.19.1",
+        "ts-node": "^8.5.4",
+        "typescript": "^3.7.5"
+    }
 }

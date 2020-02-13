@@ -1,6 +1,7 @@
 {
-  "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules"],
-  "watch": ["src"],
-  "exec": "npm run start:dev",
-  "ext": "ts"
+    "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/nodemon.json",
+    "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules"],
+    "watch": ["src"],
+    "exec": "npm run start-dev",
+    "ext": "ts"
 }
