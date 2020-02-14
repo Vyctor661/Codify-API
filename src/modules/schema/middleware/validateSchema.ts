@@ -4,11 +4,11 @@ import { ObjectSchema } from "@hapi/joi"
 
 import { HttpError } from "../../error/classes/httpError"
 
-type validationField = "body" | "params" | "query"
+type ValidationField = "body" | "params" | "query"
 
 export const validateSchema = (
     schema: ObjectSchema,
-    field: validationField
+    field: ValidationField
 ): Middleware => (ctx, next) => {
     const result = schema.validate(ctx[field])
 
