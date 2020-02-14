@@ -21,6 +21,7 @@
     },
     "homepage": "https://github.com/Vyctor661/Codify-API#readme",
     "dependencies": {
+        "@hapi/joi": "^17.1.0",
         "dotenv": "^8.2.0",
         "knex": "^0.20.6",
         "koa": "^2.11.0",
@@ -29,6 +30,7 @@
         "pg": "^7.17.0"
     },
     "devDependencies": {
+        "@types/hapi__joi": "^16.0.10",
         "@types/koa": "^2.11.1",
         "@types/koa-logger": "^3.1.1",
         "@types/koa-router": "^7.4.0",
