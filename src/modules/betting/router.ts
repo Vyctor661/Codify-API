@@ -2,18 +2,24 @@ import Router from "koa-router"
 
 import { HttpError } from "../error/classes/httpError"
 
+import { validateSchema } from "../schema/middleware/validateSchema"
+
 import { getUserToken } from "./actions/getUserToken"
 import { updateUserBalance } from "./actions/updateUserBalance"
 
 import { gamble } from "./helpers/gamble"
 import { checkAmount } from "./helpers/checkAmount"
 
+import betSchema from "./schemas/bet"
+
 const router = new Router({ prefix: "/bet" })
 
-router.post("/", async (ctx, next) => {
-    const { id, token, amount } = ctx.body
+type BettingBody = { id: string; token: string; amount: number }
 
-    const userToken = await getUserToken(String(id))
+router.post("/", validateSchema(betSchema, "body"), async (ctx, next) => {
+    const { id, token, amount } = ctx.body as BettingBody
+
+    const userToken = await getUserToken(id)
     if (!userToken) {
         throw new HttpError(404, "There seems to be no user with that id!")
     }
@@ -22,18 +28,18 @@ router.post("/", async (ctx, next) => {
         throw new HttpError(401, "That doesn't seem to be the right token!")
     }
 
-    const validAmount = await checkAmount(Number(amount))(id)
+    const validAmount = await checkAmount(amount)(id)
     if (!validAmount) {
         throw new HttpError(400, "You don't seem to have enough money!")
     }
 
-    const [dice, winAmount] = gamble(Number(amount))
+    const [dice, winAmount] = gamble(amount)
     const newBalance = await updateUserBalance(id)(winAmount)
 
     ctx.body = {
         rolled: dice,
         won: dice >= 50 ? true : false,
-        amountWon: winAmount + Number(amount),
+        amountWon: winAmount + amount,
         newBalance
     }
 
