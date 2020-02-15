@@ -17,7 +17,7 @@ const router = new Router({ prefix: "/bet" })
 type BettingBody = { id: string; token: string; amount: number }
 
 router.post("/", validateSchema(betSchema, "body"), async (ctx, next) => {
-    const { id, token, amount } = ctx.body as BettingBody
+    const { id, token, amount } = ctx.request.body as BettingBody
 
     const userToken = await getUserToken(id)
     if (!userToken) {
