@@ -6,7 +6,7 @@ export const updateUserBalance = (id: User["userId"]) => async (
     amount: User["balance"]
 ) =>
     (
-        await db<User>("users")
+        await db<User>("user")
             .where({ userid: id })
             .increment("balance", amount)
             .returning("balance")
