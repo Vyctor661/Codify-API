@@ -2,6 +2,7 @@ import Koa from "koa"
 
 import Router from "koa-router"
 
+import bodyParser from "koa-bodyparser"
 import logger from "koa-logger"
 
 import { errorHandler } from "./modules/error/middleware/errorHandler"
@@ -17,6 +18,7 @@ app.use(errorHandler())
 
 router.use(apiRouter)
 
+app.use(bodyParser())
 if (process.env.NODE_ENV === "development") {
     app.use(logger())
 }
