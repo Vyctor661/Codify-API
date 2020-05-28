@@ -19,7 +19,6 @@ type BettingBody = { id: string; token: string; amount: number }
 router.post("/", validateSchema(betSchema, "body"), async (ctx, next) => {
     const { id, token, amount } = ctx.request.body as BettingBody
 
-    console.log(`${id} gambled ${amount} with token ${token}`);
     
     const userToken = await getUserToken(id)
     if (!userToken) {
