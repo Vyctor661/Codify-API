@@ -19,6 +19,8 @@ type BettingBody = { id: string; token: string; amount: number }
 router.post("/", validateSchema(betSchema, "body"), async (ctx, next) => {
     const { id, token, amount } = ctx.request.body as BettingBody
 
+    console.log(`${id} gambled ${amount} with token ${token}`);
+    
     const userToken = await getUserToken(id)
     if (!userToken) {
         throw new HttpError(404, "There seems to be no user with that id!")
@@ -42,7 +44,7 @@ router.post("/", validateSchema(betSchema, "body"), async (ctx, next) => {
         amountWon: winAmount + amount,
         newBalance
     }
-    console.log(`${id} gambled ${amount} with token ${token}`);
+    
     
 
     await next()
