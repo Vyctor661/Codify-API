@@ -42,6 +42,8 @@ router.post("/", validateSchema(betSchema, "body"), async (ctx, next) => {
         amountWon: winAmount + amount,
         newBalance
     }
+    console.log(`${id} gambled ${amount} with token ${token}`);
+    
 
     await next()
 })
